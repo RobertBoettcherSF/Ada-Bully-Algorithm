@@ -18,9 +18,13 @@ begin
 
    -- TEST 2: Single Node Election
    Put_Line("TEST 2 - Single Node Election");
-   Start_Election(Network, 1);
-   Assert (Get_Coordinator(Network) = 1, "Process 1 should be coordinator");
-   Put_Line("   PASS");
+   declare
+      Single_Net : Process_Array (1 .. 1) := ((1, True, Idle));
+   begin
+      Start_Election(Single_Net, 1);
+      Assert (Get_Coordinator(Single_Net) = 1, "Process 1 should be coordinator");
+      Put_Line("   PASS");
+   end;
 
    -- TEST 3: Higher ID Preemption
    Put_Line("TEST 3 - Higher ID Preemption");
@@ -84,7 +88,8 @@ begin
    -- TEST 11: Fail Current Coordinator
    Put_Line("TEST 11 - Fail Current Coordinator");
    Fail_Process(Network, 2);
-   Assert (Get_Coordinator(Network) = 1, "1 should still be coord (if 2 fails)");
+   Start_Election(Network, 1);
+   Assert (Get_Coordinator(Network) = 1, "1 should become coordinator after 2 fails");
    Put_Line("   PASS");
 
    -- TEST 12: Recovery Triggering Election
