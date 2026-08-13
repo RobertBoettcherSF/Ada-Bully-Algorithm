@@ -19,7 +19,7 @@ begin
    -- TEST 2: Single Node Election
    Put_Line("TEST 2 - Single Node Election");
    declare
-      Single_Net : Process_Array (1 .. 1) := ((1, True, Idle));
+      Single_Net : Process_Array (1 .. 1) := (1 => Process'(1, True, Idle));
    begin
       Start_Election(Single_Net, 1);
       Assert (Get_Coordinator(Single_Net) = 1, "Process 1 should be coordinator");
@@ -78,7 +78,7 @@ begin
    -- TEST 10: Non-Sequential IDs (Robustness)
    Put_Line("TEST 10 - Non-Sequential IDs");
    declare
-      Custom_Net : Process_Array (1 .. 2) := ((10, True, Idle), (5, True, Idle));
+      Custom_Net : Process_Array (1 .. 2) := (1 => Process'(10, True, Idle), 2 => Process'(5, True, Idle));
    begin
       Start_Election(Custom_Net, 5);
       Assert (Get_Coordinator(Custom_Net) = 10, "10 should beat 5");
